@@ -40,4 +40,33 @@ $pdo = pdo_connect_mysql();
 </form>
 </div>
 
+<script type="text/javascript">
+    
+  //convert json to JS array data.
+  function arrayjsonbarcode(j) {
+    json = JSON.parse(j);
+    arr = [];
+    for (var x in json) {
+      arr.push(json[x]);
+    }
+    return arr;
+  }
+
+  //convert PHP array to json data.
+  jsonvalue = '<?php echo json_encode($array) ?>';
+  values = arrayjsonbarcode(jsonvalue);
+
+  //generate barcodes using values data.
+  for (var i = 0; i < values.length; i++) {
+    JsBarcode("#barcode" + values[i], values[i].toString(), {
+      format: "codabar",
+      lineColor: "#000",
+      width: 1,
+      height: 15,
+      displayValue: true
+      }
+    );
+  }
+</script>
+
 <?=template_footer()?>
