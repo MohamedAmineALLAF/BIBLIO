@@ -37,7 +37,7 @@ if (!empty($_POST)) {
                header('Location:../Livres/indexL.php');
             }
             else{
-                $msg='Code-barres incorrecte ';
+                $msg='Code-barres invalide ';
             }
         }
 }
