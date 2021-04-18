@@ -49,7 +49,8 @@ echo <<<EOT
             <li><a href="#">Statistiques</a></li>
             <li><a href="../Gestionnaire/indexG.php">Gestionnaires</a></li>
             <li><a href="../Livres/indexL.php">Livres</a></li>
-            <li><a href="#">Emprunteurs</a></li>
+            <li><a href="../Exemplaire/indexE.php">Exemplaires</a></li>
+            <li><a href="#">Emprunts</a></li>
             <li><a href="#">Emprunts non retournées</a></li>
           </ul>
         </div>
