@@ -28,10 +28,12 @@ if($search){
     <div class="container">   
             <div class="head">
               <h2>Livres</h2><br>
-            <a class="create" href="createL.php">Ajouter un livre</a>
+              
+              <a class="create" href="createL.php">Ajouter un livre</a>
             </div>
             <form>
-            <div class="cont" style="margin-top: 15px;margin-bottom:15px;">
+            <div class="cont" style="margin-top: 20px;margin-bottom:15px;">
+
               <input type="text" class="search" name="search"
                placeholder="Scanner ISBN du livre"
                value="<?php echo $search; ?>">
@@ -39,6 +41,7 @@ if($search){
                 <i class="fas fa-search">
                 </i>
               </button>
+
             </div>
             </form>
             <div style="overflow-x: auto;overflow-y:auto;">

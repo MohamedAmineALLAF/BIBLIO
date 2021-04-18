@@ -16,6 +16,11 @@
     flex-flow: row wrap;
     justify-content: center;
 }
+.cont1{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
 .create{
     padding: 20px 15px 15px 15px;
     font-weight: bolder;
@@ -33,7 +38,7 @@
 }
 
 .search{
-    width: 35%;
+    width: 60%;
     padding: 5px 5px 5px 5px;
     font-size: 1rem;
     margin-right: 4px;
