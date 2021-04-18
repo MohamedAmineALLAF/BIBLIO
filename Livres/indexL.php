@@ -105,7 +105,7 @@ if($search){
     <div class="container">   
             <div class="head">
               <h2>Exemplaires</h2><br> 
-              <a class="create" href="createL.php">Ajouter un exemplaire</a>
+              <a class="create" href="createE.php">Ajouter un exemplaire</a>
             </div>
             <form>
             <div class="cont" style="margin-top: 20px;margin-bottom:15px;">
@@ -173,11 +173,7 @@ if($search){
   jsonvalue = '<?php echo json_encode($array) ?>';
   values = arrayjsonbarcode(jsonvalue);
 
-  jsonvalue1 = '<?php echo json_encode($array1) ?>';
-  values1 = arrayjsonbarcode(jsonvalue1);
-
-  jsonvalue2 = '<?php echo json_encode($array2) ?>';
-  values2 = arrayjsonbarcode(jsonvalue2);
+  
   
 
   //generate barcodes using values data.
@@ -192,27 +188,7 @@ if($search){
     );
   }
 
-  for (var i = 0; i < values1.length; i++) {
-    JsBarcode("#barcode1" + values1[i], values1[i].toString(), {
-      format: "EAN13",
-      lineColor: "#000",
-      width: 1,
-      height: 15,
-      displayValue: true
-      }
-    );
-  }
-
-  for (var i = 0; i < values2.length; i++) {
-    JsBarcode("#isbn" + values2[i], values2[i].toString(), {
-      format: "EAN13",
-      lineColor: "#000",
-      width: 1,
-      height: 15,
-      displayValue: true
-      }
-    );
-  }
+  
 
 </script>
 <?=template_footer()?>
