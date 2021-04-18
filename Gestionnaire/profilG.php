@@ -15,7 +15,7 @@ $pdo = pdo_connect_mysql();
 <form action="indexG.php" method="post">
 <div class="wrap">
 <?php foreach ($contacts as $contact)
-    $array[] = $contact['CBGest'];
+    $arra[] = $contact['CBGest'];
 ?>
     <div class="row1">
         <label > <strong> code-Barres :</strong> </label>
@@ -55,7 +55,7 @@ $pdo = pdo_connect_mysql();
   }
 
   //convert PHP array to json data.
-  jsonvalue = '<?php echo json_encode($array) ?>';
+  jsonvalue = '<?php echo json_encode($arra) ?>';
   values = arrayjsonbarcode(jsonvalue);
 
   //generate barcodes using values data.
