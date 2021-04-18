@@ -14,10 +14,12 @@ $pdo = pdo_connect_mysql();
 <h2 style="color: black;">Informations personnelles : </h2>
 <form action="indexG.php" method="post">
 <div class="wrap">
-<?php foreach ($contacts as $contact)?>
+<?php foreach ($contacts as $contact)
+    $array[] = $contact['CBGest'];
+?>
     <div class="row1">
         <label > <strong> code-Barres :</strong> </label>
-        <label for=""><?= $_SESSION["code"] ?></label>
+        <label for=""><svg id='<?php echo "barcode".$contact['CBGest']; ?>'></label>
         <label for="id"> <strong> CIN : </strong> </label>
         <label for=""><?=$contact['cinG']?></label>
         <label for="name"> <strong> Nom gestionnaire : </strong> </label>
