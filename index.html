@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link rel="stylesheet" href="index.css">
+      <script src="script.js" defer></script>
+      <title>Responsive Navbar</title>
+    </head>
+    <body>
+      <nav class="navbar">
+        <div class="brand-title">FS EL JADIDA UCD</div>
+        <a href="#" class="toggle-button">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </a>
+        <div class="navbar-links">
+          <ul>
+            <li><a href="#">Statistiques</a></li>
+            <li><a href="#">Gestionnaires</a></li>
+            <li><a href="#">Livres</a></li>
+            <li><a href="#">Emprunteurs</a></li>
+            <li><a href="#">Emprunts non retournées</a></li>
+          </ul>
+        </div>
+        <div class="navbar-links ">
+            <ul>
+                <li> 
+                    <a href=""> Amine Malki
+                        </a>
+                    </li>
+            </ul>
+        </div>
+      </nav>
+      <main>
+          <div class="container">
+            
+            <div class="head">
+              <h2>Livres</h2><br>
+            <a class="create">Ajouter un gestionnaire</a>
+            </div>
+            <div class="cont">
+              <input type="text" class="search">
+              <input type="button" value="search">
+            </div>
+          </div>  
+      </main>
+    </body>
+    <script>
+          
+    const toggleButton = document.getElementsByClassName('toggle-button')[0]
+    const navbarLinks = document.getElementsByClassName('navbar-links')[0]
+    const navbarLinks2 = document.getElementsByClassName('navbar-links')[1]
+    toggleButton.addEventListener('click', () => {
+    navbarLinks.classList.toggle('active');
+    navbarLinks2.classList.toggle('active');
+    })
+    </script>
+</html>

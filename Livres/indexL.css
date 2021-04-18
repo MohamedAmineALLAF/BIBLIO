@@ -1,0 +1,124 @@
+.container{
+    display: flex;
+    margin:50px;
+    padding: 10px;
+    box-shadow: 1px 1px 9px whitesmoke;
+    background-color: whitesmoke;
+    flex-flow: column nowrap;
+}
+.head{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+.cont{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+.create{
+    padding: 20px 15px 15px 15px;
+    font-weight: bolder;
+    font-size: 1rem;
+    border-radius: 3px;
+    color: whitesmoke;
+    background-color: #162B32;
+    border: 2px solid #1DB954;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.create:hover{
+    background-color: #1b363f;
+}
+
+.search{
+    width: 35%;
+    padding: 5px 5px 5px 5px;
+    font-size: 1rem;
+    margin-right: 4px;
+}
+.search:focus{
+    border: 1px solid rgb(214, 208, 208);
+    outline: none;
+    border-bottom: 2px solid #1DB954;
+}
+.btnsearch:focus{
+    outline: none;
+}
+.btnsearch{
+    background-color: #162B32;
+    color: white;
+    font-size: 1rem;
+    padding: 7px;
+    border-radius: 6px;
+    border: none;
+    border: 2px solid #1DB954;
+    cursor: pointer;
+}
+.btnsearch:hover{
+    background-color:#1b363f;
+}
+
+table {
+    margin-top: 20px;
+    width: 100%;
+    padding-top: 30px;
+    border-collapse: collapse;
+    color: black;
+    font-size: 1.1rem;
+}
+
+table thead {
+    background-color: #ebeef1;
+    border-bottom: 1px solid #d3dae0;
+    text-align: center;
+    
+}
+table thead td {
+    padding: 10px;
+    font-weight: bold;
+    color: #767779;
+    font-size: 14px;
+    text-align: center;
+  
+}
+table tbody tr {
+    border-bottom: 1px solid #d3dae0;
+    text-align: center;
+}
+table tbody tr:nth-child(even) {
+    background-color: #fbfcfc;
+}
+table tbody tr:hover {
+    background-color: lightgrey;
+}
+
+table tbody tr td {
+    padding: 10px;
+}
+
+table tbody tr td.actions {
+    padding: 10px;
+    
+}
+table tbody tr td.actions .edit,table tbody tr td.actions .trash {
+    display: inline-flex; 
+    text-decoration: none;
+    color: #FFFFFF;
+    padding: 10px 12px;
+}
+table tbody tr td.actions .trash {
+    color:#b73737 ;
+}
+table tbody tr td.actions .trash:hover {
+    background-color: #b73737;  
+    color: white;
+}
+table tbody tr td.actions .edit {
+    color: #1DB954;
+}
+table tbody tr td.actions .edit:hover {
+    background-color: #1DB954;
+    color: white;
+}
