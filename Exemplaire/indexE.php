@@ -68,8 +68,8 @@ if($search2){
                 <td><?=$contact2['anneeEdi']?></td>
                 <td><?=$contact2['etatEx']?></td>
                 <td class="actions">
-                    <a href="updateL.php?ISBN=<?=$contact2['ISBN']?>" class="edit"><i class="fas fa-pen fa-xs"></i></a>
-                    <a href="deleteL.php?ISBN=<?=$contact2['ISBN']?>" class="trash"><i class="fas fa-trash fa-xs"></i></a>
+                    <a href="updateE.php?codeBar=<?=$contact2['codeBar']?>" class="edit"><i class="fas fa-pen fa-xs"></i></a>
+                    <a href="deleteE.php?codeBar=<?=$contact2['codeBar']?>" class="trash"><i class="fas fa-trash fa-xs"></i></a>
                 </td>
             </tr>
             <?php endforeach; ?>
