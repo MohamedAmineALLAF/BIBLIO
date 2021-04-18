@@ -58,7 +58,7 @@ echo <<<EOT
             <ul>
                 <li> 
                     <a href="">  $nom $prenom   
-                      <i class="fas fa-caret-square-down"></i>
+                      <i style="margin:5px 2px 2px 4px" class="fas fa-angle-down"></i>
                     </a>
                 </li>
             </ul>
