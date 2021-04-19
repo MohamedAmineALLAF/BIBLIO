@@ -2,33 +2,75 @@
 
 include '../functions.php';
 $pdo = pdo_connect_mysql();
+
+
+$stmt1 = $pdo->prepare('select * from emprunt where etat = 1');
+$stmt1 -> execute();
+$emprunts1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt2 = $pdo->prepare('select * from emprunt where etat = 0');
+$stmt2 -> execute();
+$emprunts2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 $search2 = $_GET['search2']??'';
 if($search2){
     $statement2 = $pdo->prepare
-    ('select l.titreLiv,l.ISBN,et.CNI,et.CBR
+    ('select e.codeEmprunt,l.titreLiv,l.ISBN,et.CNI,et.CBR
     from emprunt e,livre l,exemplaire ex,etudiant et
     where l.ISBN=ex.ISBN
     and ex.codeBar = e.codeBar 
     and	e.CBR=et.CBR
-    and l.ISBN= :title ;');
+    and e.codeEmprunt= :title ;');
     $statement2->bindValue(':title',"%$search2%");
 }else{
   $statement2 = $pdo->prepare
-        ('select l.titreLiv,l.ISBN,et.CNI,et.CBR
+        ('select e.codeEmprunt,l.titreLiv,l.ISBN,et.CNI,et.CBR
         from emprunt e,livre l,exemplaire ex,etudiant et
         where l.ISBN=ex.ISBN
         and ex.codeBar = e.codeBar 
-        and	e.CBR=et.CBR;');
+        and	e.CBR=et.CBR
+        and e.etat = 2
+        order by e.codeEmprunt desc;');
 }
     $statement2->execute();
     $contacts2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
+
+
+    if (isset($_GET['codeEmprunt'])) {
+      // Select the record that is going to be deleted
+      $stmt = $pdo->prepare('SELECT * FROM emprunt WHERE codeEmprunt = ?');
+      $stmt->execute([$_GET['codeEmprunt']]);
+      $contact = $stmt->fetch(PDO::FETCH_ASSOC);
+      if (!$contact) {
+          exit('emprunt nexites pas');
+      }
+      if (isset($_GET['confirm'])) {
+          if ($_GET['confirm'] == 'yes') {
+              $stmt = $pdo->prepare('update emprunt
+              set Etat = 1
+              WHERE codeEmprunt = ?');
+              $stmt->execute([$_GET['codeEmprunt']]);
+              header('Location: indexEm.php');
+          } else {
+             $stmt = $pdo->prepare('update emprunt
+              set Etat = 0
+              and dateDebut = ? and dateFin = ?
+              WHERE codeEmprunt = ?');
+              $stmt->execute(['0000-00-00','0000-00-00',$_GET['codeEmprunt']]);
+              header('Location: indexEm.php');
+              exit;
+          }
+      }
+  }
 ?>
 
 <?=template_header('Read')?>
 
 <div class="container">   
             <div class="head">
-              <h2>Emprunts</h2><br> 
+              <h2>Emprunts : </h2><br> 
             </div>
             <form>
               <div class="cont" style="margin-top: 20px;margin-bottom:15px;">
@@ -48,7 +90,7 @@ if($search2){
                 ?>
                 <article>
                     <div class="text">
-                    <h3 >Etudiant : 
+                    <h3 >Code-barres étudiant : 
                     <svg id='<?php echo "barcode1".$contact['CBR']; ?>'>
                         <?= $contact['CBR'] ?>
                     </h3>
@@ -61,15 +103,15 @@ if($search2){
                         <?= $contact['titreLiv'] ?>
                     </h3>
                     <h3 >
-                        ISBN :
+                        ISBN livre  :
                         <svg id='<?php echo "barcode2".$contact['ISBN']; ?>'>
                         <?= $contact['ISBN'] ?> </h3>
                     <div class="btn">
-                        <a class="btnapp" href="">
+                        <a class="btnapp" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=yes">
                             <i class="fas fa-check"></i>
                                 Confirmer
                             </a>
-                        <a class="btndelete" href="">
+                        <a class="btndelete" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=no">
                             <i class="fas fa-times"></i>
                                 Rejeter
                             </a>
@@ -78,6 +120,50 @@ if($search2){
                 </article>
             <?php endforeach; ?>      
         </div>
+        <h2 style="margin-top: 50px;">Emprunts confirmés : </h2>
+        <table>
+        <thead>
+            <tr>              
+                <td>Code-barres exemplaire</td>
+                <td>Code-barres etudiant</td>
+                <td>Code-barres gestionnaire</td>
+                <td>Date début</td>
+                <td>Date fin</td>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($emprunts1 as $emprunt):
+                $array1[] = $emprunt['codeBar'];
+                $array2[] = $emprunt['CBR'];
+                $array3[] = $emprunt['CBGest'];
+                ?>
+            <tr>
+                <td>
+                  <svg id='<?php echo "barcode1".$emprunt['codeBar']; ?>'>
+                </td>
+                <td><svg id='<?php echo "barcode2".$emprunt['CBR']; ?>'></td>
+                <td><svg id='<?php echo "barcode3".$emprunt['CBGest']; ?>'></td>
+                <td><?=$emprunt['dateDebut']?></td>
+                <td><?=$emprunt['dateFin']?></td>
+            </tr>
+            <?php endforeach; ?>
+            <tr>
+              <td colspan="5">
+              <?php
+                global $val1;
+                $stmt1 = $pdo->prepare('select count(*) as nombre from emprunt where etat = 1');
+                $stmt1 -> execute();
+                $emprunts1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+                foreach($emprunts1 as $emprunts){
+                  $val1 = $emprunts['nombre'];
+                }
+                ?>
+                Le total des emprunts validés est <?php echo $val1; ?>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
     </div>
     <script type="text/javascript">
   //convert json to JS array data.
@@ -112,7 +198,7 @@ if($search2){
   //generate barcodes using values data.
   for (var i = 0; i < values1.length; i++) {
     JsBarcode("#barcode2" + values1[i], values1[i].toString(), {
-      format: "EAN13",
+      format: "CODE128B",
       lineColor: "#000",
       width: 1,
       height: 15,
@@ -121,6 +207,20 @@ if($search2){
     );
   }
   
+  jsonvalue2 = '<?php echo json_encode($array3) ?>';
+  values2 = arrayjsonbarcode(jsonvalue2);
+
+  //generate barcodes using values data.
+  for (var i = 0; i < values2.length; i++) {
+    JsBarcode("#barcode3" + values2[i], values2[i].toString(), {
+      format: "CODE128B",
+      lineColor: "#000",
+      width: 1,
+      height: 15,
+      displayValue: true
+      }
+    );
+  }
 
 
 
