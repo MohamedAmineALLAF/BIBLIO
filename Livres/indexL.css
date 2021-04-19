@@ -119,6 +119,7 @@ table tbody tr td.actions .trash {
 table tbody tr td.actions .trash:hover {
     background-color: #b73737;  
     color: white;
+    border-radius: 3px;
 }
 table tbody tr td.actions .edit {
     color: #1DB954;
@@ -126,4 +127,5 @@ table tbody tr td.actions .edit {
 table tbody tr td.actions .edit:hover {
     background-color: #1DB954;
     color: white;
+    border-radius: 3px;
 }

@@ -36,8 +36,7 @@ if (!empty($_POST)) {
             <input type="text" name="isbn" placeholder="John" id="nom">
             <label for="title">Année edition</label>
             <input type="text" name="edition" placeholder="fake.fake@fake.com" id="email">
-        
-        <input type="submit" value="Ajouter" class="crt" style="letter-spacing: 1px;"> 
+            <input type="submit" value="Ajouter" class="crt" style="letter-spacing: 1px;"> 
     </div>
     </form>
 </div>

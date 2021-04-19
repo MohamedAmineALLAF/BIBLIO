@@ -31,7 +31,7 @@ if (!empty($_POST)) {
 <?=template_header('Read')?>
 
 <div class="content update">
-	<h2 style="color: black;">Ajouter gestionnaire : </h2>
+	<h2 style="color: black;">Modifier gestionnaire : </h2>
     <form action="updateG.php?CBGest=<?=$contact['CBGest']?>" method="post">
     <div class="wrap">
         <div class="row1">

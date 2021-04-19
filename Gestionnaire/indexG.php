@@ -2,11 +2,16 @@
 include '../functions.php';
 $pdo = pdo_connect_mysql();
 $search = $_GET['search']??'';
+
+
 if($search){
-    $statement = $pdo->prepare('SELECT * FROM Gestionnaire WHERE CBGest LIKE :title  ORDER BY dateinscripG DESC');
+    $statement = $pdo->prepare('SELECT * FROM Gestionnaire WHERE CBGest LIKE :title  ORDER BY dateinscripG DESC ');
     $statement->bindValue(':title',"%$search%");
+    $contacts = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
 }else{
     $statement = $pdo->prepare('SELECT * FROM Gestionnaire ORDER BY CBGEst');
+    $contacts = $statement->fetchAll(PDO::FETCH_ASSOC);
 }
     $statement->execute();
     $contacts = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -70,7 +75,9 @@ if($search){
             <?php endforeach; ?>
         </tbody>
     </table>
+    
     </div>
+    
     </div> 
 <script type="text/javascript">
     

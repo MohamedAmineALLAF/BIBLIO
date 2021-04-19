@@ -11,7 +11,7 @@ if (isset($_GET['codeBar'])) {
     if (!$contact) {
         exit('exemplaire n exites pas');
     }
-    // Make sure the user confirms beore deletion
+
     if (isset($_GET['confirm'])) {
         if ($_GET['confirm'] == 'yes') {
             $stmt = $pdo->prepare('DELETE FROM exemplaire WHERE codeBar = ?');
@@ -36,8 +36,8 @@ if (isset($_GET['codeBar'])) {
 	<p style="color: black;font-size: 1.2rem;">Voulez vous vraiment supprimer<br> 
     l'exemplaire avec le code-barres <br> <strong> <?=$contact['codeBar']?> </strong> ?</p>
     <div class="yesno">
-        <a href="deleteG.php?codeBar=<?=$contact['codeBar']?>&confirm=yes">Oui</a>
-        <a href="deleteG.php?codeBar=<?=$contact['codeBar']?>&confirm=no">Non</a>
+        <a href="deleteE.php?codeBar=<?=$contact['codeBar']?>&confirm=yes">Oui</a>
+        <a href="deleteE.php?codeBar=<?=$contact['codeBar']?>&confirm=no">Non</a>
     </div>
     <?php endif; ?>
 </div>
