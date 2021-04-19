@@ -1,12 +1,13 @@
 @font-face {
     font-family: myfont;
-    src: url(Fonts/Product\ Sans\ Regular.ttf);
+    src: url(Fonts/Lato-Light.ttf);
 }
 
 
 * {
     box-sizing: border-box;
     font-family: myfont;
+    font-weight: bolder;
 }
 
 body {

@@ -1,12 +1,13 @@
 @font-face{
     font-family: 'mtFont';
-    src: url('../Fonts/Product\ Sans\ Regular.ttf');
+    src: url('../Fonts/Lato-Light.ttf');
 }
 
 *{
     margin:0;
     padding: 0;
     box-sizing: border-box;
+    font-weight: bolder;
 }
 html{
     height: 100%;

@@ -55,7 +55,7 @@ if (!empty($_POST)) {
         <form class="login-form" action="login.php" method="POST">
             <div class="form-header">
                 <img src="../Images/log.jpg" width="150px" height="150px"> 
-                <h3 style="font-size: larger;">Espace gestionnaire</h3>
+                <h3 style="font-size: larger;"> <strong>Espace gestionnaire</strong></h3>
                 <p style="font-size:large;">Connectez-vous à votre espace</p>
             </div>
             <input type="password" name="codeb" class="form-input" placeholder="Scanner votre code-barres" style="margin-bottom: 10px;">
