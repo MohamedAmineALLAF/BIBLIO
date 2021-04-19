@@ -14,11 +14,6 @@ function pdo_connect_mysql() {
     }
 }
 
-
-
-
-
-
 function template_header($title) {
   $nom = $_SESSION["nom"];
   $prenom = $_SESSION["prenom"];
@@ -30,11 +25,12 @@ echo <<<EOT
       <link rel="stylesheet" href="../Livres/indexL.css">
       <link rel="stylesheet" href="../Livres/createL.css">
       <link rel="stylesheet" href="../Gestionnaire/deleteG.css">
+      <link rel="stylesheet" href="../Emprunts/indexEm.css">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
       <script src="../script.js" defer></script>
       <script src="../JsBarcode.all.min.js"></script>
       <script src="../jquery.js"></script>
-      <title>Responsive Navbar</title>
+      <title>Bibliothèque FSJ</title>
     </head>
     <body>
       <nav class="navbar">
@@ -50,7 +46,7 @@ echo <<<EOT
             <li><a href="../Gestionnaire/indexG.php">Gestionnaires</a></li>
             <li><a href="../Livres/indexL.php">Livres</a></li>
             <li><a href="../Exemplaire/indexE.php">Exemplaires</a></li>
-            <li><a href="#">Emprunts</a></li>
+            <li><a href="../Emprunts/indexEm.php">Emprunts</a></li>
             <li><a href="#">Emprunts non retournées</a></li>
           </ul>
         </div>

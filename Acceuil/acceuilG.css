@@ -1,11 +1,14 @@
 @font-face{
     font-family: myFont;
-    src: url(../Fonts/Product\ Sans\ Regular.ttf);
+    src: url(../Fonts/Lato-Regular.ttf);
 }
 
 body{
     box-sizing: border-box;
     background-color: #162B32;
+    font-family: myFont;
+    font-weight: bold;
+
 }
 .wrap{
     display: flex;
