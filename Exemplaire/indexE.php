@@ -9,7 +9,7 @@ if($search2){
     from exemplaire e,livre l,edition ed
     where e.ISBN=l.ISBN
     and e.codeEdi = ed.codeEdi 
-    and e.codeEdi like :title');
+    and e.codeBar like :title');
     $statement2->bindValue(':title',"%$search2%");
 }else{
   $statement2 = $pdo->prepare
@@ -96,7 +96,7 @@ if($search2){
   //generate barcodes using values data.
   for (var i = 0; i < values1.length; i++) {
     JsBarcode("#barcode1" + values1[i], values1[i].toString(), {
-      format: "CODE128C",
+      format: "CODE128B",
       lineColor: "#000",
       width: 1,
       height: 15,
