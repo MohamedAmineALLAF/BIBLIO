@@ -129,3 +129,7 @@ table tbody tr td.actions .edit:hover {
     color: white;
     border-radius: 3px;
 }
+.exporting{
+    display: flex;
+    flex-flow: column nowrap;
+}

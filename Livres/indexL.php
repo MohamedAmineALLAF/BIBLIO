@@ -45,6 +45,12 @@ if($search){
               </button>
             </div>
             </form>
+            <form class="form-inline" method="post" action="../PDF/FICHIERS/PDFL.php">
+              <button type="submit" id="pdf" name="generate_pdf" style="text-align: center;font-size:large" >
+              <i style="color: rgb(250, 49, 49);" class="fas fa-file-pdf"></i>
+               exporter PDF
+              </button>
+            </form>
             <div style="overflow-x: auto;overflow-y:auto;">
     <table>
         <thead>

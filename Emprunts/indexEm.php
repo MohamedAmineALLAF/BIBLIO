@@ -32,7 +32,7 @@ if($search2){
         and d.codeDis=l.codeDis
         and ex.codeBar = e.codeBar 
         and	e.CBR=et.CBR
-        and e.etat = 2
+        and e.etat = 0
         order by e.codeEmprunt desc;');
 }
     $statement2->execute();
@@ -73,17 +73,6 @@ if($search2){
             <div class="head">
               <h2>Emprunts : </h2><br> 
             </div>
-            <form>
-              <div class="cont" style="margin-top: 20px;margin-bottom:15px;">
-              <input type="text" class="search" name="search2"
-               placeholder="Scanner ISBN du livre, code-barres "
-               value="<?php echo $search2; ?>">
-                    <button type="submit" class="btnsearch">
-                        <i class="fas fa-search">
-                        </i>
-                     </button>
-                    </div>
-            </form>
             <div class="grid">
             <?php foreach ($contacts2 as $contact):?>
                 <article>
@@ -130,30 +119,46 @@ if($search2){
             <?php endforeach; ?>      
         </div>
         <h2 style="margin-top: 50px;">Emprunts confirmés : </h2>
+        <form>
+              <div class="cont" style="margin-top: 20px;margin-bottom:15px;">
+              <input type="text" class="search" name="search2"
+               placeholder="Scanner ISBN du livre, code-barres "
+               value="<?php echo $search2; ?>">
+                    <button type="submit" class="btnsearch">
+                        <i class="fas fa-search">
+                        </i>
+                     </button>
+                    </div>
+            </form>
+        <form class="form-inline" method="post" action="../PDF/FICHIERS/PDFE.php">
+              <button type="submit" id="pdf" name="generate_pdf" style="text-align: center;font-size:large" >
+              <i style="color: rgb(250, 49, 49);" class="fas fa-file-pdf"></i>
+               exporter PDF
+              </button>
+            </form>
         <table>
         <thead>
             <tr>              
-                <td>Code-barres exemplaire</td>
-                <td>Code-barres etudiant</td>
-                <td>Code-barres gestionnaire</td>
+                <td>Titre livre</td>
+                <td>Catégorie</td>
+                <td>Etudiant</td>
+                <td>CIN</td>
                 <td>Date début</td>
                 <td>Date fin</td>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($emprunts1 as $emprunt):
-                $array1[] = $emprunt['codeBar'];
-                $array2[] = $emprunt['CBR'];
-                $array3[] = $emprunt['CBGest'];
-                ?>
+
+            <?php foreach ($contacts2 as $contact):?>
             <tr>
                 <td>
-                  <svg id='<?php echo "barcode1".$emprunt['codeBar']; ?>'>
+                    <?= $contact['titreLiv'] ?>
                 </td>
-                <td><svg id='<?php echo "barcode2".$emprunt['CBR']; ?>'></td>
-                <td><svg id='<?php echo "barcode3".$emprunt['CBGest']; ?>'></td>
-                <td><?=$emprunt['dateDebut']?></td>
-                <td><?=$emprunt['dateFin']?></td>
+                <td><?= $contact['libelleDis'] ?></td>
+                <td><?php echo $contact['nomEtu'] ." ".$contact['prenomEtu'] ?></td>
+                <td><?= $contact['CNI'] ?></td>
+                <td><?=$contact['dateDebut']?></td>
+                <td><?=$contact['dateFin']?></td>
             </tr>
             <?php endforeach; ?>
             <tr>
