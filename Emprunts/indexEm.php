@@ -26,9 +26,10 @@ if($search2){
     $statement2->bindValue(':title',"%$search2%");
 }else{
   $statement2 = $pdo->prepare
-        ('select e.codeEmprunt,l.titreLiv,l.ISBN,et.CNI,et.CBR
-        from emprunt e,livre l,exemplaire ex,etudiant et
+        ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
+        from emprunt e,livre l,exemplaire ex,etudiant et,discipline d
         where l.ISBN=ex.ISBN
+        and d.codeDis=l.codeDis
         and ex.codeBar = e.codeBar 
         and	e.CBR=et.CBR
         and e.etat = 2
@@ -84,28 +85,36 @@ if($search2){
                     </div>
             </form>
             <div class="grid">
-            <?php foreach ($contacts2 as $contact):
-                $array1[] = $contact['CBR'];
-                $array2[] = $contact['ISBN'];
-                ?>
+            <?php foreach ($contacts2 as $contact):?>
                 <article>
                     <div class="text">
-                    <h3 >Code-barres étudiant : 
-                    <svg id='<?php echo "barcode1".$contact['CBR']; ?>'>
-                        <?= $contact['CBR'] ?>
+                    <h3 >Titre Livre : 
+                      <?= $contact['titreLiv'] ?>
+                    </h3>
+                    <h3>
+                        Catégorie livre  :  
+                        <?= $contact['libelleDis'] ?>
+                    </h3>
+                    <h3>
+                        Nom étudiant  :  
+                        <?= $contact['nomEtu'] ?>
+                    </h3>
+                    <h3>
+                        Prénom étudiant  :  
+                        <?= $contact['prenomEtu'] ?>
                     </h3>
                     <h3>
                         CIN : 
                         <?= $contact['CNI'] ?>
                     </h3>
                     <h3>
-                        Titre livre  :  
-                        <?= $contact['titreLiv'] ?>
+                        Date début : 
+                        <?= $contact['dateDebut'] ?>
                     </h3>
-                    <h3 >
-                        ISBN livre  :
-                        <svg id='<?php echo "barcode2".$contact['ISBN']; ?>'>
-                        <?= $contact['ISBN'] ?> </h3>
+                    <h3>
+                        Date fin : 
+                        <?= $contact['dateFin'] ?>
+                    </h3>
                     <div class="btn">
                         <a class="btnapp" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=yes">
                             <i class="fas fa-check"></i>

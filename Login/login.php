@@ -34,7 +34,7 @@ if (!empty($_POST)) {
                         $_SESSION["nom"]=$ses['nomG'];
                         $_SESSION["prenom"]=$ses['prenomG'];
                     }
-               header('Location:../Livres/indexL.php');
+               header('Location:../Statistiques/indexS.php');
             }
             else{
                 $msg='Code-barres invalide ';

@@ -26,6 +26,7 @@ echo <<<EOT
       <link rel="stylesheet" href="../Livres/createL.css">
       <link rel="stylesheet" href="../Gestionnaire/deleteG.css">
       <link rel="stylesheet" href="../Emprunts/indexEm.css">
+      <link rel="stylesheet" href="../Statistiques/indexS.css">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
       <script src="../script.js" defer></script>
       <script src="../JsBarcode.all.min.js"></script>
@@ -42,7 +43,7 @@ echo <<<EOT
         </a>
         <div class="navbar-links">
           <ul>
-            <li><a href="#">Statistiques</a></li>
+            <li><a href="../Statistiques/indexS.php">Statistiques</a></li>
             <li><a href="../Gestionnaire/indexG.php">Gestionnaires</a></li>
             <li><a href="../Livres/indexL.php">Livres</a></li>
             <li><a href="../Exemplaire/indexE.php">Exemplaires</a></li>
