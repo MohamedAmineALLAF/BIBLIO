@@ -38,8 +38,8 @@ if (isset($_GET['ISBN'])) {
     <?php else: ?>
 	<p style="color: black;font-size: 1.2rem;">Voulez vous vraiment supprimer<br> le livre avec l'ISBN <br> <strong> <?=$contact['ISBN']?> </strong> ?</p>
     <div class="yesno">
-        <a href="deleteL.php?ISBN=<?=$contact['ISBN']?>&confirm=yes">Oui</a>
-        <a href="deleteL.php?ISBN=<?=$contact['ISBN']?>&confirm=no">Non</a>
+        <a href="deleteL.php?ISBN=<?=$contact['ISBN']?>&confirm=yes"  style="border-radius: 4px;background-color:#1DB954">Oui</a>
+        <a href="deleteL.php?ISBN=<?=$contact['ISBN']?>&confirm=no"  style="border-radius: 4px;background-color:rgb(250, 49, 49)">Non</a>
     </div>
     <?php endif; ?>
 </div>

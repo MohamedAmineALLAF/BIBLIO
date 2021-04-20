@@ -47,7 +47,7 @@ if (!empty($_POST)) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>The Login Form</title>
+    <title>Bibliothèque FSJ</title>
     <link rel="stylesheet" href="login.css">
 </head>
 <body>

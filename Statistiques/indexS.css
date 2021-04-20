@@ -21,7 +21,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    border-bottom: 1px solid #1DB954;
+
   }
   .overview_card {
     flex-basis: 300px;
@@ -41,6 +41,8 @@ body {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
+    padding-bottom: 10px;
+
 }
 .row11{
     display: flex;
@@ -80,4 +82,16 @@ body {
     color: white;
     overflow-x: hidden;
     overflow-y: auto;
+    height: 400px;
+    width: 500px;
+  }
+
+  .card:nth-child(1) {
+    grid-area: card2;
+    background-color: #1DB954;
+    color: white;
+  }
+  .card:nth-child(2) {
+    background-color: rgb(250, 49, 49);
+    color: white;
   }

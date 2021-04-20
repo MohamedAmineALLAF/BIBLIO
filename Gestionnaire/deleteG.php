@@ -37,8 +37,8 @@ if (isset($_GET['CBGest'])) {
     <?php else: ?>
 	<p style="color: black;font-size: 1.2rem;">Voulez vous vraiment supprimer<br> le gestionnaire avec le code-barres <br> <strong> <?=$contact['CBGest']?> </strong> ?</p>
     <div class="yesno">
-        <a href="deleteG.php?CBGest=<?=$contact['CBGest']?>&confirm=yes">Oui</a>
-        <a href="deleteG.php?CBGest=<?=$contact['CBGest']?>&confirm=no">Non</a>
+        <a href="deleteG.php?CBGest=<?=$contact['CBGest']?>&confirm=yes" style="border-radius: 4px;background-color:#1DB954">Oui</a>
+        <a href="deleteG.php?CBGest=<?=$contact['CBGest']?>&confirm=no" style="border-radius: 4px;background-color:rgb(250, 49, 49)">Non</a>
     </div>
     <?php endif; ?>
 </div>

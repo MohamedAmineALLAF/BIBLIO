@@ -22,7 +22,7 @@
     justify-content: space-between;
 }
 .create{
-    padding: 20px 15px 15px 15px;
+    padding: 20px 15px 2px 15px;
     font-weight: bolder;
     font-size: 1rem;
     border-radius: 3px;
@@ -114,10 +114,10 @@ table tbody tr td.actions .edit,table tbody tr td.actions .trash {
     padding: 10px 12px;
 }
 table tbody tr td.actions .trash {
-    color:#b73737 ;
+    color:rgb(250, 49, 49);
 }
 table tbody tr td.actions .trash:hover {
-    background-color: #b73737;  
+    background-color: rgb(250, 49, 49);  
     color: white;
     border-radius: 3px;
 }

@@ -36,8 +36,8 @@ if (isset($_GET['codeBar'])) {
 	<p style="color: black;font-size: 1.2rem;">Voulez vous vraiment supprimer<br> 
     l'exemplaire avec le code-barres <br> <strong> <?=$contact['codeBar']?> </strong> ?</p>
     <div class="yesno">
-        <a href="deleteE.php?codeBar=<?=$contact['codeBar']?>&confirm=yes">Oui</a>
-        <a href="deleteE.php?codeBar=<?=$contact['codeBar']?>&confirm=no">Non</a>
+        <a href="deleteE.php?codeBar=<?=$contact['codeBar']?>&confirm=yes" style="border-radius: 4px;background-color:#1DB954">Oui</a>
+        <a href="deleteE.php?codeBar=<?=$contact['codeBar']?>&confirm=no" style="border-radius: 4px;background-color:rgb(250, 49, 49)">Non</a>
     </div>
     <?php endif; ?>
 </div>
