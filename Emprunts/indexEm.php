@@ -15,16 +15,7 @@ $emprunts2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
 
 $search2 = $_GET['search2']??'';
-if($search2){
-    $statement2 = $pdo->prepare
-    ('select e.codeEmprunt,l.titreLiv,l.ISBN,et.CNI,et.CBR
-    from emprunt e,livre l,exemplaire ex,etudiant et
-    where l.ISBN=ex.ISBN
-    and ex.codeBar = e.codeBar 
-    and	e.CBR=et.CBR
-    and e.codeEmprunt= :title ;');
-    $statement2->bindValue(':title',"%$search2%");
-}else{
+
   $statement2 = $pdo->prepare
         ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
         from emprunt e,livre l,exemplaire ex,etudiant et,discipline d
@@ -32,9 +23,8 @@ if($search2){
         and d.codeDis=l.codeDis
         and ex.codeBar = e.codeBar 
         and	e.CBR=et.CBR
-        and e.etat = 2
-        order by e.codeEmprunt desc;');
-}
+        and e.etat = 0
+        order by e.dateDebut desc;');
     $statement2->execute();
     $contacts2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
 
@@ -55,11 +45,9 @@ if($search2){
               $stmt->execute([$_GET['codeEmprunt']]);
               header('Location: indexEm.php');
           } else {
-             $stmt = $pdo->prepare('update emprunt
-              set Etat = 0
-              and dateDebut = ? and dateFin = ?
+             $stmt = $pdo->prepare('delete from emprunt
               WHERE codeEmprunt = ?');
-              $stmt->execute(['0000-00-00','0000-00-00',$_GET['codeEmprunt']]);
+              $stmt->execute([$_GET['codeEmprunt']]);
               header('Location: indexEm.php');
               exit;
           }
@@ -71,7 +59,7 @@ if($search2){
 
 <div class="container">   
             <div class="head">
-              <h2>Emprunts : </h2><br> 
+              <h2>Emprunts </h2><br> 
             </div>
             <div class="grid">
             <?php foreach ($contacts2 as $contact):?>
@@ -118,7 +106,7 @@ if($search2){
                 </article>
             <?php endforeach; ?>      
         </div>
-        <h2 style="margin-top: 50px;">Emprunts confirmés : </h2>
+        <h2 style="margin-top: 50px;">Emprunts confirmés </h2>
         <form>
               <div class="cont" style="margin-top: 20px;margin-bottom:15px;">
               <input type="text" class="search" name="search2"
@@ -128,8 +116,8 @@ if($search2){
                         <i class="fas fa-search">
                         </i>
                      </button>
-                    </div>
-            </form>
+              </div>
+        </form>
         <form class="form-inline" method="post" action="../PDF/FICHIERS/PDFE.php">
               <button type="submit" id="pdf" name="generate_pdf" style="text-align: center;font-size:large" >
               <i style="color: rgb(250, 49, 49);" class="fas fa-file-pdf"></i>
@@ -150,17 +138,31 @@ if($search2){
         <tbody>
 
               <?php
-              $smt = $pdo->prepare
-              ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
-              from emprunt e,livre l,exemplaire ex,etudiant et,discipline d
-              where l.ISBN=ex.ISBN
-              and d.codeDis=l.codeDis
-              and ex.codeBar = e.codeBar 
-              and	e.CBR=et.CBR
-              and e.etat = 1
-              order by e.codeEmprunt desc;');
-              $smt->execute();
-              $ctts = $smt->fetchAll(PDO::FETCH_ASSOC);
+              $search2 = $_GET['search2']??'';
+              if($search2){
+                  $smt = $pdo->prepare
+                  ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
+                  from emprunt e,livre l,exemplaire ex,etudiant et,discipline d
+                  where l.ISBN=ex.ISBN
+                  and d.codeDis=l.codeDis
+                  and ex.codeBar = e.codeBar 
+                  and	e.CBR=et.CBR
+                  and e.etat = 1
+                  and e.codeEmprunt= :title ;');
+                  $smt->bindValue(':title',"%$search2%");
+              }else{
+                $smt = $pdo->prepare
+                      ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
+                      from emprunt e,livre l,exemplaire ex,etudiant et,discipline d
+                      where l.ISBN=ex.ISBN
+                      and d.codeDis=l.codeDis
+                      and ex.codeBar = e.codeBar 
+                      and	e.CBR=et.CBR
+                      and e.etat = 1
+                      order by e.codeEmprunt desc;');
+              }
+                $smt->execute();
+                $ctts = $smt->fetchAll(PDO::FETCH_ASSOC);
               ?>
             <?php foreach ($ctts as $contact):?>
             <tr>
@@ -175,7 +177,7 @@ if($search2){
             </tr>
             <?php endforeach; ?>
             <tr>
-              <td colspan="5">
+              <td colspan="6">
               <?php
                 global $val1;
                 $stmt1 = $pdo->prepare('select count(*) as nombre from emprunt where etat = 1');
@@ -185,7 +187,7 @@ if($search2){
                   $val1 = $emprunts['nombre'];
                 }
                 ?>
-                Le total des emprunts validés est <?php echo $val1; ?>
+                Le nombre total des emprunts validés est <?php echo $val1; ?>
               </td>
             </tr>
           </tbody>

@@ -75,6 +75,13 @@ function template_footer() {
 echo <<<EOT
 </div>
 </main>
+<footer style="background-color:#162B32;color:white;padding:10px">
+      <center>
+
+          FS El Jadida UCD 2021 
+
+      </center>
+</footer>
     </body>
     <script>       
     const toggleButton = document.getElementsByClassName('toggle-button')[0]

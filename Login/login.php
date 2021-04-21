@@ -1,32 +1,18 @@
 <?php
-function pdo_connect_mysql() {
-    $DATABASE_HOST = 'localhost';
-    $DATABASE_USER = 'root';
-    $DATABASE_PASS = '';
-    $DATABASE_NAME = 'biblio';
-    try {
-    	return new PDO('mysql:host=' . $DATABASE_HOST . ';dbname=' . $DATABASE_NAME . ';charset=utf8', $DATABASE_USER, $DATABASE_PASS);
-    } catch (PDOException $exception) {
-    	exit('Failed to connect to database!');
-    }
-}
-
+require_once('../functions.php');
 $pdo = pdo_connect_mysql();
 $msg='';
 
-session_start();
-
 if (!empty($_POST)) { 
     $codeb = $_POST['codeb'] ;
-    $email = $_POST['email'];
-    $mdp = $_POST['mdp'];
+    
     $stmt0 = $pdo->prepare('SELECT * FROM gestionnaire ');
         $stmt0->execute();
         $codeA = $stmt0->fetchAll(PDO::FETCH_ASSOC);
         foreach($codeA as $code){
             if($codeb === $code['CBGest']){
-                $msg = '';
-                $stmt1 = $pdo->prepare('SELECT * FROM gestionnaire where CBGest = ? ');
+                    $msg = '';
+                    $stmt1 = $pdo->prepare('SELECT * FROM gestionnaire where CBGest = ? ');
                     $stmt1->execute([$codeb]);
                     $session = $stmt1->fetchAll(PDO::FETCH_ASSOC);
                     foreach($session as $ses){
@@ -62,14 +48,9 @@ if (!empty($_POST)) {
             <div class="error">
             <label ><?php echo $msg?></label>
             </div>
-            <p style="text-align: center;font-size:1.1rem;">OU</p>
+
             <div class="form-footer" style="margin-top:10px;">     
-                <div class="form-group">
-                    <input name="email" type="text" class="form-input" placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <input type="password" name="mdp" class="form-input" placeholder="Mot de passe">
-                </div>
+                
                 <div class="form-group">
                     <button class="form-button" type="submit">
                         Se connecter

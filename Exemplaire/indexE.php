@@ -78,7 +78,22 @@ if($search2){
                     <a href="deleteE.php?codeBar=<?=$contact2['codeBar']?>" class="trash"><i class="fas fa-trash fa-xs"></i></a>
                 </td>
             </tr>
+            
             <?php endforeach; ?>
+            <tr>
+              <td colspan="6">
+              <?php
+                global $val1;
+                $stmt1 = $pdo->prepare('select count(*) as nombre from exemplaire');
+                $stmt1 -> execute();
+                $emprunts1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+                foreach($emprunts1 as $emprunts){
+                  $val1 = $emprunts['nombre'];
+                }
+                ?>
+                Le nombre total des exemplaires est <?php echo $val1; ?>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
