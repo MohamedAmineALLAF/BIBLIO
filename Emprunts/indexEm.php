@@ -32,7 +32,7 @@ if($search2){
         and d.codeDis=l.codeDis
         and ex.codeBar = e.codeBar 
         and	e.CBR=et.CBR
-        and e.etat = 0
+        and e.etat = 2
         order by e.codeEmprunt desc;');
 }
     $statement2->execute();
@@ -149,7 +149,20 @@ if($search2){
         </thead>
         <tbody>
 
-            <?php foreach ($contacts2 as $contact):?>
+              <?php
+              $smt = $pdo->prepare
+              ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
+              from emprunt e,livre l,exemplaire ex,etudiant et,discipline d
+              where l.ISBN=ex.ISBN
+              and d.codeDis=l.codeDis
+              and ex.codeBar = e.codeBar 
+              and	e.CBR=et.CBR
+              and e.etat = 1
+              order by e.codeEmprunt desc;');
+              $smt->execute();
+              $ctts = $smt->fetchAll(PDO::FETCH_ASSOC);
+              ?>
+            <?php foreach ($ctts as $contact):?>
             <tr>
                 <td>
                     <?= $contact['titreLiv'] ?>

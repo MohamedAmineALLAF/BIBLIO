@@ -13,6 +13,7 @@ $prenom = $_SESSION["prenom"];
         <h1 style="font-family: myFont;color: black;margin-left: 10px;">Bonjour <?php echo $_SESSION["nom"]." ".$_SESSION["prenom"] ?>,</h1>
         <p style="font-family: myFont;color: black;margin-left: 10px;">Bienvenue à votre tableau de bord, voici la liste des statistiques. </p>
         <h1>Statistiques générales : </h1>
+        
         <div class="main_overview">     
           <div class="overview_card">
           <?php
