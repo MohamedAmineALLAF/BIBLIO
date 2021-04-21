@@ -2,6 +2,7 @@
 
 session_start();
 
+
 function pdo_connect_mysql() {
     $DATABASE_HOST = 'localhost';
     $DATABASE_USER = 'root';
@@ -77,9 +78,7 @@ echo <<<EOT
 </main>
 <footer style="background-color:#162B32;color:white;padding:10px">
       <center>
-
-          FS El Jadida UCD 2021 
-
+        © Faculté des Sciences-El Jadida  UCD 2021
       </center>
 </footer>
     </body>

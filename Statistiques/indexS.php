@@ -108,13 +108,14 @@ $prenom = $_SESSION["prenom"];
 <div class="wrap1">
         <?php
         
-        $stmt=$pdo->prepare('select l.titreLiv,et.nomEtu , et.prenomEtu,d.libelleDis,e.dateDebut
-        from livre l,exemplaire ex,emprunt e,etudiant et,discipline d
+        $stmt=$pdo->prepare('select l.titreLiv ,et.nomEtu,et.prenomEtu,d.libelleDis,e.dateDebut
+        from livre l,discipline d,exemplaire ex,emprunt e,etudiant et
         where l.ISBN=ex.ISBN
-        and ex.codeBar = e.codeBar
-        AND d.codeDis = l.codeDis
-        and et.CBR = e.CBR 
-        order by e.dateDebut desc;;');
+        and d.codeDis=l.codeDis
+        and e.CBR=et.CBR
+        and e.codeBar=ex.codeBar
+        and DAY(e.dateDebut) = DAY(CURDATE())
+        and YEAR(e.dateDebut) = YEAR(CURDATE());');
         $stmt->execute();
         $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
@@ -135,13 +136,14 @@ $prenom = $_SESSION["prenom"];
 
         <?php
         
-        $stmt=$pdo->prepare('select l.titreLiv,et.nomEtu , et.prenomEtu,d.libelleDis,e.dateDebut
-        from livre l,exemplaire ex,emprunt e,etudiant et,discipline d
+        $stmt=$pdo->prepare('select l.titreLiv ,et.nomEtu,et.prenomEtu,d.libelleDis,e.dateDebut
+        from livre l,discipline d,exemplaire ex,emprunt e,etudiant et
         where l.ISBN=ex.ISBN
-        and ex.codeBar = e.codeBar
-        AND d.codeDis = l.codeDis
-        and et.CBR = e.CBR 
-        order by e.dateFin desc;');
+        and d.codeDis=l.codeDis
+        and e.CBR=et.CBR
+        and e.codeBar=ex.codeBar
+        and DAY(e.dateFin) = DAY(CURDATE())
+        and YEAR(e.dateFin) = YEAR(CURDATE());');
         $stmt->execute();
         $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>

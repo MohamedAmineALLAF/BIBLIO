@@ -133,3 +133,13 @@ table tbody tr td.actions .edit:hover {
     display: flex;
     flex-flow: column nowrap;
 }
+@media (max-width: 800px) {
+    .container{
+        display: flex;
+        margin:22px;
+        
+        box-shadow: 1px 1px 9px whitesmoke;
+        background-color: whitesmoke;
+        flex-flow: column nowrap;
+    }
+}

@@ -12,9 +12,17 @@ $stmt2 = $pdo->prepare('select * from emprunt where etat = 0');
 $stmt2 -> execute();
 $emprunts2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
+global $value;
+$stmt2 = $pdo->prepare('select CBGest from gestionnaire where nomG = ? and prenomG = ?');
+$stmt2 -> execute([$_SESSION['nom'],$_SESSION['prenom']]);
+$gest = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+foreach($gest as $g){
+    $value = $g['CBGest'];
+}
 
 
 $search2 = $_GET['search2']??'';
+$exemp = $_GET['exemp']??'';
 
   $statement2 = $pdo->prepare
         ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
@@ -41,8 +49,10 @@ $search2 = $_GET['search2']??'';
           if ($_GET['confirm'] == 'yes') {
               $stmt = $pdo->prepare('update emprunt
               set Etat = 1
+              and codeBar = ?
+              and CBGest = ?
               WHERE codeEmprunt = ?');
-              $stmt->execute([$_GET['codeEmprunt']]);
+              $stmt->execute([$exemp,$value,$_GET['codeEmprunt']]);
               header('Location: indexEm.php');
           } else {
              $stmt = $pdo->prepare('delete from emprunt
@@ -93,7 +103,7 @@ $search2 = $_GET['search2']??'';
                         <?= $contact['dateFin'] ?>
                     </h3>
                     <div class="btn">
-                        <a class="btnapp" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=yes">
+                        <a class="btnapp" id="show" style="cursor: pointer;">
                             <i class="fas fa-check"></i>
                                 Confirmer
                             </a>
@@ -101,8 +111,14 @@ $search2 = $_GET['search2']??'';
                             <i class="fas fa-times"></i>
                                 Rejeter
                             </a>
-                        </div>
                     </div>
+                    <div class="hide" style="display: none;">
+                       <input type="text" class="search" name="exemp" style="width: 86%;margin:17px 0 17px;" placeholder="Scanner le code-barres de l'exemplaire"><br>
+                       <a class="btnapp" style="width: 300px;padding:8px;" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=yes">
+                                Confirmation
+                            </a>
+                    </div>
+                  </div>
                 </article>
             <?php endforeach; ?>      
         </div>
@@ -124,6 +140,7 @@ $search2 = $_GET['search2']??'';
                exporter PDF
               </button>
             </form>
+            <div style="overflow-x: auto;overflow-y:auto;">
         <table>
         <thead>
             <tr>              
@@ -192,7 +209,7 @@ $search2 = $_GET['search2']??'';
             </tr>
           </tbody>
         </table>
-        
+            </div>
     </div>
     <script type="text/javascript">
   //convert json to JS array data.

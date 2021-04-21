@@ -1,3 +1,3 @@
-$(".create").click(function(){
-    $(".table").hide();
+$("#show").click(function(){
+    $(".hide").toggle();
   });
