@@ -114,8 +114,7 @@ $prenom = $_SESSION["prenom"];
         and d.codeDis=l.codeDis
         and e.CBR=et.CBR
         and e.codeBar=ex.codeBar
-        and DAY(e.dateDebut) = DAY(CURDATE())
-        and YEAR(e.dateDebut) = YEAR(CURDATE());');
+        and e.dateDebut = CURRENT_DATE();');
         $stmt->execute();
         $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
@@ -135,31 +134,29 @@ $prenom = $_SESSION["prenom"];
 
 
         <?php
-        
-        $stmt=$pdo->prepare('select l.titreLiv ,et.nomEtu,et.prenomEtu,d.libelleDis,e.dateDebut
-        from livre l,discipline d,exemplaire ex,emprunt e,etudiant et
-        where l.ISBN=ex.ISBN
-        and d.codeDis=l.codeDis
-        and e.CBR=et.CBR
-        and e.codeBar=ex.codeBar
-        and DAY(e.dateFin) = DAY(CURDATE())
-        and YEAR(e.dateFin) = YEAR(CURDATE());');
-        $stmt->execute();
-        $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt=$pdo->prepare('select l.titreLiv ,et.nomEtu,et.prenomEtu,d.libelleDis,e.dateDebut
+            from livre l,discipline d,exemplaire ex,emprunt e,etudiant et
+            where l.ISBN=ex.ISBN
+            and d.codeDis=l.codeDis
+            and e.CBR=et.CBR
+            and e.codeBar=ex.codeBar
+            and e.dateFin = CURRENT_DATE();');
+            $stmt->execute();
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
 
     <div class="card">Les livres a retournés aujourd'hui: 
-            <ol class="book-list">
+        <ol class="book-list">
             <?php foreach ($records as $emprunt): ?>
-              <li> <strong>Titre : </strong> <?= $emprunt['titreLiv']?> <br> 
+            <li> <strong>Titre : </strong> <?= $emprunt['titreLiv']?> <br> 
               <strong>Nom étudiant :   </strong><?= $emprunt['nomEtu']?><br>
               <strong>Prénom étudiant :   </strong><?= $emprunt['prenomEtu']?><br>
               <strong> Discipline : </strong><?= $emprunt['libelleDis']?><br>
               <strong>Date début :   </strong><?= $emprunt['dateDebut']?><br>
             </li>
             <?php endforeach; ?>
-          </ol>
-        </div>
+        </ol>
+    </div>
 
 </div>
 <h1 >à-propos des livres : </h1>

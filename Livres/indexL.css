@@ -136,8 +136,7 @@ table tbody tr td.actions .edit:hover {
 @media (max-width: 800px) {
     .container{
         display: flex;
-        margin:22px;
-        
+        margin:11px;
         box-shadow: 1px 1px 9px whitesmoke;
         background-color: whitesmoke;
         flex-flow: column nowrap;

@@ -49,7 +49,7 @@ echo <<<EOT
             <li><a href="../Livres/indexL.php">Livres</a></li>
             <li><a href="../Exemplaire/indexE.php">Exemplaires</a></li>
             <li><a href="../Emprunts/indexEm.php">Emprunts</a></li>
-            <li><a href="#">Emprunts non retournées</a></li>
+            <li><a href="../Nonretournées/Nonr.php">Emprunts non retournées</a></li>
           </ul>
         </div>
         <div class="navbar-links ">
@@ -69,18 +69,19 @@ echo <<<EOT
         </div>
       </nav>
       <main>
-      <div class="container">
+        <div class="container">
 EOT;
 }
+
 function template_footer() {
 echo <<<EOT
-</div>
-</main>
-<footer style="background-color:#162B32;color:white;padding:10px">
-      <center>
-        © Faculté des Sciences-El Jadida  UCD 2021
-      </center>
-</footer>
+        </div>
+      </main>
+      <footer style="background-color:#162B32;color:white;padding:10px">
+        <center>
+          © Faculté des Sciences-El Jadida  UCD 2021
+        </center>
+      </footer>
     </body>
     <script>       
     const toggleButton = document.getElementsByClassName('toggle-button')[0]
