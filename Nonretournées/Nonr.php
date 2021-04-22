@@ -4,73 +4,51 @@ include '../functions.php';
 $pdo = pdo_connect_mysql();
 
 
-$stmt1 = $pdo->prepare('select * from emprunt where etat = 1');
-$stmt1 -> execute();
-$emprunts1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt2 = $pdo->prepare('select * from emprunt where etat = 0');
-$stmt2 -> execute();
-$emprunts2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-
-global $value;
-$stmt2 = $pdo->prepare('select CBGest from gestionnaire where nomG = ? and prenomG = ?');
-$stmt2 -> execute([$_SESSION['nom'],$_SESSION['prenom']]);
-$gest = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-foreach($gest as $g){
-    $value = $g['CBGest'];
-}
-
-
-$search2 = $_GET['search2']??'';
-$exemp = $_GET['exemp']??'';
-
+  
+  global $code;
+  global $val;
+  
   $statement2 = $pdo->prepare
-        ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
-        from emprunt e,livre l,exemplaire ex,etudiant et,discipline d
-        where l.ISBN=ex.ISBN
-        and d.codeDis=l.codeDis
-        and ex.codeBar = e.codeBar 
-        and	e.CBR=et.CBR
-        and e.etat = 0
-        order by e.dateDebut desc;');
-        #select * from emprunt where DATEDIFF(dateFin, dateDebut)>2;
-    $statement2->execute();
-    $contacts2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
+        ('select e.dateFin,et.CNE,e.dateDebut,et.nomEtu,et.prenomEtu,et.CNI,l.titreLiv,d.libelleDis
+          from emprunt e, livre l, etudiant et,exemplaire ex,discipline d
+          where l.ISBN=ex.ISBN
+          and l.codeDis=d.codeDis
+          and ex.codeBar=e.codeBar
+          and et.CBR=e.CBR
+          and DATEDIFF(e.dateFin, e.dateDebut)>2;');
+        $statement2->execute();
+        $contacts2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
 
-
-    if (isset($_GET['codeEmprunt'])) {
+    if (isset($_GET['CNE'])) {
       // Select the record that is going to be deleted
-      $stmt = $pdo->prepare('SELECT * FROM emprunt WHERE codeEmprunt = ?');
-      $stmt->execute([$_GET['codeEmprunt']]);
+      $stmt = $pdo->prepare('SELECT * FROM etudiant WHERE CNE = ?');
+      $stmt->execute([$_GET['CNE']]);
       $contact = $stmt->fetch(PDO::FETCH_ASSOC);
       if (!$contact) {
-          exit('emprunt nexites pas');
+          exit('étudiant nexites pas');
       }
+      if(isset($_GET['libellePun'])){ 
+        $smt = $pdo->prepare('select codePun from punition where libellePun = ?');
+        $smt ->execute([$_GET['libellePun']]);
+        $punit = $smt->fetch(PDO::FETCH_ASSOC);
+        print_r($punit['codePun']);
       if (isset($_GET['confirm'])) {
           if ($_GET['confirm'] == 'yes') {
-              $stmt = $pdo->prepare('update emprunt
-              set Etat = 1
-              and codeBar = ?
-              and CBGest = ?
-              WHERE codeEmprunt = ?');
-              $stmt->execute([$exemp,$value,$_GET['codeEmprunt']]);
-              header('Location: indexEm.php');
-          } else {
-             $stmt = $pdo->prepare('delete from emprunt
-              WHERE codeEmprunt = ?');
-              $stmt->execute([$_GET['codeEmprunt']]);
-              header('Location: indexEm.php');
-              exit;
+            $stmt = $pdo->prepare('INSERT IGNORE INTO punir VALUES (?, ?)');
+            $stmt->execute([print_r($punit['codePun']),$_GET['CNE']]);
+            header('Location: Nonr.php');
           }
       }
   }
+}
 ?>
 
 <?=template_header('Read')?>
 
 <div class="container">   
             <div class="head">
-              <h2>Emprunts </h2><br> 
+              <h2>Emprunts non retournées (dépassement de 48 heures)</h2><br> 
             </div>
             <div class="grid">
             <?php foreach ($contacts2 as $contact):?>
@@ -103,85 +81,31 @@ $exemp = $_GET['exemp']??'';
                         Date fin : 
                         <?= $contact['dateFin'] ?>
                     </h3>
+                    <h3>
+                    <?php
+                          $smt = $pdo->prepare('select libellePun From punition');
+                          $smt->execute();
+                          $data = $smt->fetchAll();
+                      ?>
+                      <form action="Nonr.php" method="post">
+                        <select name="disc" id="disc" style="padding:6px 25px 6px 25px;font-size:large">
+                          <?php foreach ($data as $row): 
+                            $val = $row["libellePun"];
+                            ?>
+                              <option><?=$row["libellePun"]?></option>
+                          <?php endforeach ?>
+                        </form>
+                      </select>
+                    </h3>
                     <div class="btn">
-                        <a class="btnapp" id="show" style="cursor: pointer;">
+                        <a class="btnapp" id="show" style="cursor: pointer;"  href="Nonr.php?CNE=<?=$contact['CNE']?>&libellePun=<?= $val ?>&confirm=yes">
                             <i class="fas fa-check"></i>
-                                Confirmer
-                            </a>
-                        <a class="btndelete" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=no">
-                            <i class="fas fa-times"></i>
-                                Rejeter
-                            </a>
-                    </div>
-                    <div class="hide" style="display: none;">
-                       <input type="text" class="search" name="exemp" style="width: 86%;margin:17px 0 17px;" placeholder="Scanner le code-barres de l'exemplaire"><br>
-                       <a class="btnapp" style="width: 300px;padding:8px;" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=yes">
-                                Confirmation
-                            </a>
-                    </div>
+                                Validation
+                        </a>
+                    </div>  
                   </div>
                 </article>
             <?php endforeach; ?>      
         </div>        
     </div>
-    <script type="text/javascript">
-  //convert json to JS array data.
-  function arrayjsonbarcode(j) {
-    json = JSON.parse(j);
-    arr = [];
-    for (var x in json) {
-      arr.push(json[x]);
-    }
-    return arr;
-  }
-
-
-  jsonvalue = '<?php echo json_encode($array1) ?>';
-  values = arrayjsonbarcode(jsonvalue);
-
-  //generate barcodes using values data.
-  for (var i = 0; i < values.length; i++) {
-    JsBarcode("#barcode1" + values[i], values[i].toString(), {
-      format: "CODE128B",
-      lineColor: "#000",
-      width: 1,
-      height: 15,
-      displayValue: true
-      }
-    );
-  }
-  
-  jsonvalue1 = '<?php echo json_encode($array2) ?>';
-  values1 = arrayjsonbarcode(jsonvalue1);
-
-  //generate barcodes using values data.
-  for (var i = 0; i < values1.length; i++) {
-    JsBarcode("#barcode2" + values1[i], values1[i].toString(), {
-      format: "CODE128B",
-      lineColor: "#000",
-      width: 1,
-      height: 15,
-      displayValue: true
-      }
-    );
-  }
-  
-  jsonvalue2 = '<?php echo json_encode($array3) ?>';
-  values2 = arrayjsonbarcode(jsonvalue2);
-
-  //generate barcodes using values data.
-  for (var i = 0; i < values2.length; i++) {
-    JsBarcode("#barcode3" + values2[i], values2[i].toString(), {
-      format: "CODE128B",
-      lineColor: "#000",
-      width: 1,
-      height: 15,
-      displayValue: true
-      }
-    );
-  }
-
-
-
-</script>
 <?=template_footer()?>

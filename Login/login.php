@@ -5,7 +5,6 @@ $msg='';
 
 if (!empty($_POST)) { 
     $codeb = $_POST['codeb'] ;
-    
     $stmt0 = $pdo->prepare('SELECT * FROM gestionnaire ');
         $stmt0->execute();
         $codeA = $stmt0->fetchAll(PDO::FETCH_ASSOC);
@@ -48,9 +47,14 @@ if (!empty($_POST)) {
             <div class="error">
             <label ><?php echo $msg?></label>
             </div>
-
+            <p style="text-align: center;color:black">OU</p>
             <div class="form-footer" style="margin-top:10px;">     
-                
+            <div class="form-group">
+                    <input name="email" type="text" class="form-input" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="mdp" class="form-input" placeholder="Mot de passe">
+                </div>
                 <div class="form-group">
                     <button class="form-button" type="submit">
                         Se connecter

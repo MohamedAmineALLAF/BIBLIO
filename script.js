@@ -1,3 +1,3 @@
-$("#show").click(function(){
+$(".shw").click(function(){
     $(".hide").toggle();
   });

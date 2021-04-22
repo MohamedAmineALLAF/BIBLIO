@@ -3,6 +3,7 @@
     <head>
       <link rel="stylesheet" href="index.css">
       <script src="script.js" defer></script>
+      <script src="jquery.js"></script>
       <title>Responsive Navbar</title>
     </head>
     <body>
@@ -54,5 +55,22 @@
     navbarLinks.classList.toggle('active');
     navbarLinks2.classList.toggle('active');
     })
+
+    
+    $( document ).ready(function() {
+      $('.del').click(function(){
+        $textboxval = $('.search').val();
+         $.ajax({
+            url: 'http://localhost/FRONT/Emprunts/indexEm.php', // page name where you want to get value of that textbox
+            type: 'POST',
+            data : {'my_input':$textboxval},
+            success: function(res) {
+               // if you want that php send some return output here
+                }
+          });
+    });
+});
+    
+
     </script>
 </html>

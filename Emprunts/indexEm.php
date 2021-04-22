@@ -4,6 +4,7 @@ include '../functions.php';
 $pdo = pdo_connect_mysql();
 
 
+
 $stmt1 = $pdo->prepare('select * from emprunt where etat = 1');
 $stmt1 -> execute();
 $emprunts1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
@@ -21,9 +22,6 @@ foreach($gest as $g){
 }
 
 
-$search2 = $_GET['search2']??'';
-$exemp = $_GET['exemp']??'';
-
   $statement2 = $pdo->prepare
         ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
         from emprunt e,livre l,exemplaire ex,etudiant et,discipline d
@@ -38,6 +36,7 @@ $exemp = $_GET['exemp']??'';
 
 
     if (isset($_GET['codeEmprunt'])) {
+      
       // Select the record that is going to be deleted
       $stmt = $pdo->prepare('SELECT * FROM emprunt WHERE codeEmprunt = ?');
       $stmt->execute([$_GET['codeEmprunt']]);
@@ -47,13 +46,14 @@ $exemp = $_GET['exemp']??'';
       }
       if (isset($_GET['confirm'])) {
           if ($_GET['confirm'] == 'yes') {
+              $exemp = $_POST['exemp'];
               $stmt = $pdo->prepare('update emprunt
               set Etat = 1
-              and codeBar = ?
-              and CBGest = ?
+              ,codeBar = ?
+              ,CBGest = ?
               WHERE codeEmprunt = ?');
               $stmt->execute([$exemp,$value,$_GET['codeEmprunt']]);
-              header('Location: indexEm.php');
+              header('Location:indexEm.php');
           } else {
              $stmt = $pdo->prepare('delete from emprunt
               WHERE codeEmprunt = ?');
@@ -69,7 +69,7 @@ $exemp = $_GET['exemp']??'';
 
 <div class="container">   
             <div class="head">
-              <h2>Emprunts </h2><br> 
+              <h2>Emprunts en cours </h2><br> 
             </div>
             <div class="grid">
             <?php foreach ($contacts2 as $contact):?>
@@ -103,7 +103,7 @@ $exemp = $_GET['exemp']??'';
                         <?= $contact['dateFin'] ?>
                     </h3>
                     <div class="btn">
-                        <a class="btnapp" id="show" style="cursor: pointer;">
+                        <a class="btnapp shw"  style="cursor: pointer;">
                             <i class="fas fa-check"></i>
                                 Confirmer
                             </a>
@@ -113,21 +113,29 @@ $exemp = $_GET['exemp']??'';
                             </a>
                     </div>
                     <div class="hide" style="display: none;">
-                       <input type="text" class="search" name="exemp" style="width: 86%;margin:17px 0 17px;" placeholder="Scanner le code-barres de l'exemplaire"><br>
-                       <a class="btnapp" style="width: 300px;padding:8px;" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=yes">
-                                Confirmation
-                            </a>
+                    <form action="indexEm.php" method="post">
+                       <input id="exe" type="text" class="search" name="exemp" style="width: 86%;margin:17px 0 17px;" placeholder="Scanner le code-barres de l'exemplaire"><br>
+                       <a class="btnapp del" style="width: 300px;padding:8px;" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=yes">
+                          Validation
+                        </a>
+                      </form> 
                     </div>
                   </div>
                 </article>
             <?php endforeach; ?>      
         </div>
-        <h2 style="margin-top: 50px;">Emprunts confirmés </h2>
+        <h2 style="margin-top: 50px;">Emprunts retournés </h2>
+        <div class="wrap">
+              <form action="" method="post">
+
+              </form>
+        </div>
+        <h2 style="margin-top: 50px;">Listes des emprunts </h2>
         <form>
               <div class="cont" style="margin-top: 20px;margin-bottom:15px;">
               <input type="text" class="search" name="search2"
                placeholder="Scanner ISBN du livre, code-barres "
-               value="<?php echo $search2; ?>">
+               value="<?php  ?>">
                     <button type="submit" class="btnsearch">
                         <i class="fas fa-search">
                         </i>
@@ -164,8 +172,8 @@ $exemp = $_GET['exemp']??'';
                   and d.codeDis=l.codeDis
                   and ex.codeBar = e.codeBar 
                   and	e.CBR=et.CBR
-                  and e.etat = 1
-                  and e.codeEmprunt= :title ;');
+                  and e.Etat = 1
+                  and e.codeEmprunt= :title;');
                   $smt->bindValue(':title',"%$search2%");
               }else{
                 $smt = $pdo->prepare
@@ -175,7 +183,7 @@ $exemp = $_GET['exemp']??'';
                       and d.codeDis=l.codeDis
                       and ex.codeBar = e.codeBar 
                       and	e.CBR=et.CBR
-                      and e.etat = 1
+                      and e.Etat = 1
                       order by e.codeEmprunt desc;');
               }
                 $smt->execute();
@@ -211,64 +219,4 @@ $exemp = $_GET['exemp']??'';
         </table>
             </div>
     </div>
-    <script type="text/javascript">
-  //convert json to JS array data.
-  function arrayjsonbarcode(j) {
-    json = JSON.parse(j);
-    arr = [];
-    for (var x in json) {
-      arr.push(json[x]);
-    }
-    return arr;
-  }
-
-
-  jsonvalue = '<?php echo json_encode($array1) ?>';
-  values = arrayjsonbarcode(jsonvalue);
-
-  //generate barcodes using values data.
-  for (var i = 0; i < values.length; i++) {
-    JsBarcode("#barcode1" + values[i], values[i].toString(), {
-      format: "CODE128B",
-      lineColor: "#000",
-      width: 1,
-      height: 15,
-      displayValue: true
-      }
-    );
-  }
-  
-  jsonvalue1 = '<?php echo json_encode($array2) ?>';
-  values1 = arrayjsonbarcode(jsonvalue1);
-
-  //generate barcodes using values data.
-  for (var i = 0; i < values1.length; i++) {
-    JsBarcode("#barcode2" + values1[i], values1[i].toString(), {
-      format: "CODE128B",
-      lineColor: "#000",
-      width: 1,
-      height: 15,
-      displayValue: true
-      }
-    );
-  }
-  
-  jsonvalue2 = '<?php echo json_encode($array3) ?>';
-  values2 = arrayjsonbarcode(jsonvalue2);
-
-  //generate barcodes using values data.
-  for (var i = 0; i < values2.length; i++) {
-    JsBarcode("#barcode3" + values2[i], values2[i].toString(), {
-      format: "CODE128B",
-      lineColor: "#000",
-      width: 1,
-      height: 15,
-      displayValue: true
-      }
-    );
-  }
-
-
-
-</script>
 <?=template_footer()?>
