@@ -32,6 +32,8 @@ echo <<<EOT
       <script src="../script.js" defer></script>
       <script src="../JsBarcode.all.min.js"></script>
       <script src="../jquery.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
       <title>Bibliothèque FSJ</title>
     </head>
     <body>

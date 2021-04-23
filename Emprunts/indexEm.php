@@ -23,46 +23,42 @@ foreach($gest as $g){
 
 
   $statement2 = $pdo->prepare
-        ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
+        ('select  e.codeEmprunt,e.dateDebut,e.dateFin,l.titreLiv,l.ISBN,et.CNI,et.nomEtu,et.prenomEtu,d.libelleDis
         from emprunt e,livre l,exemplaire ex,etudiant et,discipline d
         where l.ISBN=ex.ISBN
         and d.codeDis=l.codeDis
         and ex.codeBar = e.codeBar 
         and	e.CBR=et.CBR
         and e.etat = 0
-        order by e.dateDebut desc;');
+        order by e.dateDebut desc
+        LIMIT 1;');
     $statement2->execute();
     $contacts2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
 
-
-    if (isset($_GET['codeEmprunt'])) {
-      
-      // Select the record that is going to be deleted
-      $stmt = $pdo->prepare('SELECT * FROM emprunt WHERE codeEmprunt = ?');
-      $stmt->execute([$_GET['codeEmprunt']]);
-      $contact = $stmt->fetch(PDO::FETCH_ASSOC);
-      if (!$contact) {
-          exit('emprunt nexites pas');
-      }
-      if (isset($_GET['confirm'])) {
-          if ($_GET['confirm'] == 'yes') {
-              $exemp = $_POST['exemp'];
-              $stmt = $pdo->prepare('update emprunt
-              set Etat = 1
-              ,codeBar = ?
-              ,CBGest = ?
+    
+    
+    if (isset($_POST['codeEm'])) {
+      if (isset($_POST['confirme'])) {
+          if ($_POST['confirme'] == 'yes') {
+            if(isset($_POST['exeme'])){
+              $stmt = $pdo->prepare('
+              update emprunt,exemplaire 
+              set emprunt.Etat = 1
+              ,exemplaire.etatEx = 0
+              ,emprunt.codeBar = ?
+              ,emprunt.CBGest = ?
+              WHERE emprunt.codeBar = exemplaire.codeBar
+              and emprunt.codeEmprunt = ?');
+              $stmt->execute([$_POST['exeme'],$value,$_POST['codeEm']]);      
+              }
+            }else{
+              $stmt = $pdo->prepare('delete from emprunt
               WHERE codeEmprunt = ?');
-              $stmt->execute([$exemp,$value,$_GET['codeEmprunt']]);
-              header('Location:indexEm.php');
-          } else {
-             $stmt = $pdo->prepare('delete from emprunt
-              WHERE codeEmprunt = ?');
-              $stmt->execute([$_GET['codeEmprunt']]);
-              header('Location: indexEm.php');
-              exit;
-          }
+              $stmt->execute([$_POST['codeEm']]);
+              exit; 
+            }
+          }  
       }
-  }
 ?>
 
 <?=template_header('Read')?>
@@ -103,31 +99,87 @@ foreach($gest as $g){
                         <?= $contact['dateFin'] ?>
                     </h3>
                     <div class="btn">
-                        <a class="btnapp shw"  style="cursor: pointer;">
+                        <a class="btnapp shw"   style="cursor: pointer;">
                             <i class="fas fa-check"></i>
                                 Confirmer
                             </a>
-                        <a class="btndelete" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=no">
+                        <a id="del" class="btndelete" style="cursor: pointer;">
                             <i class="fas fa-times"></i>
                                 Rejeter
                             </a>
+                          
                     </div>
-                    <div class="hide" style="display: none;">
-                    <form action="indexEm.php" method="post">
-                       <input id="exe" type="text" class="search" name="exemp" style="width: 86%;margin:17px 0 17px;" placeholder="Scanner le code-barres de l'exemplaire"><br>
-                       <a class="btnapp del" style="width: 300px;padding:8px;" href="indexEm.php?codeEmprunt=<?=$contact['codeEmprunt']?>&confirm=yes">
-                          Validation
-                        </a>
-                      </form> 
+                    <div>
+                    
                     </div>
+                    <div id="" class="hide" style="display: none;">
+                    
+                          <input id="exe" type="text" class="searching" name="exemp" style="width: 100%;margin:17px 0 17px;" placeholder="Scanner le code-barres de l'exemplaire"><br>
+                          <button class="btna" style="width: 100%;padding:8px;font-size:medium;cursor:pointer">
+                            Validation
+                          </button>
+                          </div> 
+
+                          <script >
+                            $(document).ready(function(){
+                            $('.btna').click(function() {
+                                var exem = $('#exe').val();
+                                var confirm = 'yes';
+                              $.ajax({
+                                url: 'indexEm.php',
+                                type: 'POST',
+                                data: { exeme : exem,
+                                  codeEm : <?=$contact['codeEmprunt']?>,
+                                  confirme : confirm
+                                },
+
+                                success: function(output){
+                                  window.location.reload(true);
+                                }
+                              });
+                            });
+                          
+                          
+                            $('#del').click(function() {
+                                var confirm = 'no';
+                              $.ajax({
+                                url: 'indexEm.php',
+                                type: 'POST',
+                                data: { 
+                                  codeEm : <?=$contact['codeEmprunt']?>,
+                                  confirme : confirm
+                                },
+                                success: function(output){
+                                  window.location.reload(true);
+                                }
+                              });
+                            });
+                            
+                          });
+                            </script>
+                             
                   </div>
                 </article>
             <?php endforeach; ?>      
         </div>
         <h2 style="margin-top: 50px;">Emprunts retournés </h2>
         <div class="wrap">
-              <form action="" method="post">
+              <?php
+              if(isset($_POST['codeB'])){
+              $stmt = $pdo -> prepare('UPDATE exemplaire,emprunt
+              SET exemplaire.etatEx=1,emprunt.dateFin=CURRENT_DATE()
+                  WHERE exemplaire.codeBar=emprunt.codeBar
+                  AND exemplaire.codeBar=?
+              ');
+              $stmt -> execute([$_POST['codeB']]);
+            }
+              ?>
 
+              <form action="indexEm.php" method="post">
+                <input type="text" name="codeB" class="searching" style="width: 100%;" placeholder="Scanner le code-barres de l'exemplaire retourné">
+                  <button type="submit" class="btna" style="width: 100%;padding:8px;font-size:medium;cursor:pointer;margin:5px 0 0 0">
+                          Validation
+                  </button>
               </form>
         </div>
         <h2 style="margin-top: 50px;">Listes des emprunts </h2>
@@ -211,12 +263,13 @@ foreach($gest as $g){
                 foreach($emprunts1 as $emprunts){
                   $val1 = $emprunts['nombre'];
                 }
-                ?>
-                Le nombre total des emprunts validés est <?php echo $val1; ?>
+              ?>
+              Le nombre total des emprunts validés est <?php echo $val1; ?>
               </td>
             </tr>
           </tbody>
         </table>
-            </div>
+      </div>
     </div>
+   
 <?=template_footer()?>
